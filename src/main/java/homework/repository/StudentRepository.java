@@ -10,6 +10,6 @@ import java.util.Collection;
 public interface StudentRepository {
     Student findById(String id);
     Collection<Student> findAll();
-    void save(String id, Student student);
+    studentDTO save(String id, Student student);
     boolean deleteById(String id);
 }

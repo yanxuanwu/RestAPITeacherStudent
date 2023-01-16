@@ -45,9 +45,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void insertStudent(String id, String name) {
+    public studentDTO insertStudent(String id, String name) {
         Student student = new Student(id, name, 0, true);
-        studentRepository.save(id, student);
+        return studentRepository.save(id, student);
     }
 
     @Override

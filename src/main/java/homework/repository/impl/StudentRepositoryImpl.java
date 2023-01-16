@@ -31,8 +31,9 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public void save(String id, Student student) {
+    public studentDTO save(String id, Student student) {
         map.put(id, student);
+        return new studentDTO(student);
     }
 
     @Override
