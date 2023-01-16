@@ -5,10 +5,9 @@ Teacher: id, name, course
 
 Rest API:
 Student : 
-          insert
-          get
-          
-          update
-          delete
-
+          getStudent
+          getStudentById
+          saveStudent
+          updateStudent
+          deleteStudent
 
