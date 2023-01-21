@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface StudentService {
     StudentResponseDTO getAllStu();
-    studentDTO getStudentById(String id);
-    studentDTO insertStudent(String id, String name);
-    void updateStudent(String id, Student student);
-    boolean deleteStudent(String id);
+    StudentDTO getStudentById(String id);
+    StudentDTO insertStudent(Student student);
+    StudentDTO updateStudent(Student student);
+    void deleteStudentById(String id);
+    void deleteStudent(Student student);
 }

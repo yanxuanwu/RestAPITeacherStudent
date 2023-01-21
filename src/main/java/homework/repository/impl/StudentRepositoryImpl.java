@@ -1,48 +1,59 @@
 package homework.repository.impl;
 
-import homework.pojo.dto.StudentResponseDTO.*;
 import homework.pojo.entity.Student;
-import homework.repository.StudentRepository;
+import homework.repository.StudentRepositoryCustom;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import java.util.*;
 
-
-public class StudentRepositoryImpl implements StudentRepository {
-    private final Map<String, Student> map = new ConcurrentHashMap<>();
-    @PostConstruct
-    public void init(){
-        map.put("1", new Student("1", "Tom", 0, true));
-        map.put("2", new Student("2", "Jerry", 0, true));
-    }
+@Transactional
+@Repository
+public class StudentRepositoryImpl implements StudentRepositoryCustom {
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
-    public Student findById(String id) {
-        return map.get(id);
-    }
-
-    @Override
-    public Collection<Student> findAll() {
-        return map.values();
-    }
-
-    @Override
-    public studentDTO save(String id, Student student) {
-        map.put(id, student);
-        return new studentDTO(student);
-    }
-
-    @Override
-    public boolean deleteById(String id) {
-        if (map.containsKey(id)) {
-            map.remove(id);
-            return true;
+    public Student findByStudentId(String id) {
+        Student stu = entityManager.find(Student.class, id);
+        if (stu == null) {
+            throw new EntityNotFoundException("Can't find Student with ID " + id);
         }
-        return false;
+        return stu;
     }
 
+    @Override
+    public List<Student> findAll() {
+        List<Student> studentList = entityManager.createNativeQuery("select s from Student s").getResultList();
+        return studentList;
+    }
+
+    @Override
+    public void deleteByStudentId(String id) {
+        Student stu = entityManager.find(Student.class, id);
+        if (stu != null) {
+            entityManager.remove(stu);
+        }
+        throw new EntityNotFoundException("Can't find Teacher with ID " + id);
+    }
+
+    @Override
+    public void deleteStudent(Student stu) {
+        entityManager.remove(stu);
+    }
+
+
+    @Override
+    public Student updateStudent(Student stu) {
+        return entityManager.merge(stu);
+    }
+
+    @Override
+    public Student insertStudent(Student stu) {
+        entityManager.persist(stu);
+        return stu;
+    }
 }

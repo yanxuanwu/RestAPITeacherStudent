@@ -9,15 +9,15 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class StudentResponseDTO {
-    private List<studentDTO> studentList;
+    private List<StudentDTO> studentList;
 
     @Data
     @AllArgsConstructor
-    public static class studentDTO{
+    public static class StudentDTO{
         private String id;
         private String name;
 
-        public studentDTO(Student stu) {
+        public StudentDTO(Student stu) {
             this.id = stu.getId();
             this.name = stu.getName();
         }

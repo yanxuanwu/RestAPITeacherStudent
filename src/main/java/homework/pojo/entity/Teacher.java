@@ -1,43 +1,38 @@
 package homework.pojo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-@Data
 @Entity
-@Table(name = "student")
-@AllArgsConstructor
+@Table(name = "teacher")
+@Data
 @NoArgsConstructor
-public class Student {
+@AllArgsConstructor
+public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "id", initialValue = 1)
     private String id;
+
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "stu",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     private List<Teacher_Student> teacher_students = new ArrayList<>();
-
-    public Student(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public List<Teacher_Student> getTeacher_Students() {
         return teacher_students;
     }
 
-    public void setTeacher_Students(List<Teacher_Student> ts) {
-        this.teacher_students = ts;
+    public void setTeacher_Students(List<Teacher_Student> teacher_students) {
+        this.teacher_students = teacher_students;
     }
 
-
+    public void addTeacher_Students(Teacher_Student ts){
+        this.teacher_students.add(ts);
+    }
 }

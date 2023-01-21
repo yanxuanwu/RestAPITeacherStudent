@@ -5,10 +5,12 @@ import homework.exception.ResourceNotFoundException;
 import homework.pojo.dto.StudentResponseDTO;
 import homework.pojo.dto.StudentResponseDTO.*;
 import homework.pojo.entity.Student;
-import homework.repository.StudentRepository;
+import homework.repository.StudentRepositoryCustom;
 import homework.service.StudentService;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.util.Collection;
@@ -17,55 +19,50 @@ import java.util.stream.Collectors;
 
 public class StudentServiceImpl implements StudentService {
 
-    private final StudentRepository studentRepository;
+    private final StudentRepositoryCustom studentRepository;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepositoryCustom studentRepository) {
         this.studentRepository = studentRepository;
     }
 
     @Override
     public StudentResponseDTO getAllStu(){
         Collection<Student> studentCollection = studentRepository.findAll();
-        List<studentDTO> studentDTOS = studentCollection.stream().map(s -> new studentDTO(s)).collect(Collectors.toList());
+        List<StudentDTO> studentDTOS = studentCollection.stream().map(s -> new StudentDTO(s)).collect(Collectors.toList());
         return new StudentResponseDTO(studentDTOS);
     }
 
     @Override
-    public studentDTO getStudentById(String id) {
+    public StudentDTO getStudentById(String id) {
         Logger logger = (Logger) LogManager.getLogger(StudentServiceImpl.class.getName());
-        logger.info(id);
-        Student student = studentRepository.findById(id);
-        logger.info(student.getName());
+        Student student = studentRepository.findByStudentId(id);
         if (student == null) {
-            logger.info("throw an exception here");
+            logger.log(Level.INFO, "throw an exception here");
             throw new ResourceNotFoundException("student object is null");
         }
-        return new studentDTO(student);
+        return new StudentDTO(student);
     }
 
     @Override
-    public studentDTO insertStudent(String id, String name) {
-        Student student = new Student(id, name, 0, true);
-        return studentRepository.save(id, student);
+    public StudentDTO insertStudent(Student student) {
+        return new StudentDTO(studentRepository.insertStudent(student));
     }
 
     @Override
-    public void updateStudent(String id, Student stu) {
-        Student student = studentRepository.findById(id);
-        if (student == null) {
-            throw new ResourceNotFoundException("student object is null");
-        }
-        student.setId(stu.getId());
-        student.setName(stu.getName());
-        student.setGrade(stu.getGrade());
-        student.setEnrolled(stu.isEnrolled());
-        studentRepository.save(id, student);
+    public StudentDTO updateStudent(Student student) {
+        return new StudentDTO(studentRepository.updateStudent(student));
+    }
+
+
+    @Override
+    public void deleteStudentById(String id) {
+        studentRepository.deleteByStudentId(id);
     }
 
     @Override
-    public boolean deleteStudent(String id) {
-        return studentRepository.deleteById(id);
+    public void deleteStudent(Student student) {
+        studentRepository.deleteStudent(student);
     }
 
 

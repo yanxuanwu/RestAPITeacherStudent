@@ -5,6 +5,7 @@ import homework.pojo.dto.StudentResponseDTO;
 import homework.pojo.dto.StudentResponseDTO.*;
 import homework.pojo.entity.Student;
 import homework.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,45 +13,47 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/student")
 public class StudentController {
+    @Autowired
     private final StudentService service;
 
     public StudentController(StudentService service) {
         this.service = service;
     }
 
-    @GetMapping("/students")
-    public ResponseEntity<StudentResponseDTO> getStudent(@RequestParam(required = false) String name){
+    @GetMapping("/all")
+    public ResponseEntity<StudentResponseDTO> getAllStudent(){
         return new ResponseEntity<>(service.getAllStu(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<studentDTO> getStudentById(@PathVariable String id) {
+    @GetMapping("/{Id}")
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable String id) {
         return new ResponseEntity<>(service.getStudentById(id), HttpStatus.OK);
-    }
-
-    public ResponseEntity<studentDTO> saveStudent(@RequestBody Student stu) {
-        studentDTO new_stu = service.insertStudent(stu.getId(), stu.getName());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("student", "/api/student/" + new_stu.getId());
-        return new ResponseEntity<>(new_stu, httpHeaders, HttpStatus.CREATED);
     }
 
     @PostMapping
-    public ResponseEntity<String> getStudent(@RequestBody Student stu) {
-        return new ResponseEntity<>("1", HttpStatus.OK);
+    public ResponseEntity<StudentDTO> insertStudent(@RequestBody Student stu) {
+        service.insertStudent(stu);
+        return new ResponseEntity<>(service.insertStudent(stu), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{Id}")
-    public ResponseEntity<studentDTO> updateStudent(@PathVariable String id, @RequestBody Student stu) {
-        service.updateStudent(id, stu);
-        return new ResponseEntity<>(service.getStudentById(id), HttpStatus.OK);
+
+    @PutMapping
+    public ResponseEntity<?> updateStudent( @RequestBody Student stu) {
+        service.updateStudent(stu);
+        return new ResponseEntity<>(service.updateStudent(stu), HttpStatus.OK);
     }
 
     @DeleteMapping("/{Id}")
-    public ResponseEntity<studentDTO> deleteStudent(@PathVariable String id) {
-        service.deleteStudent(id);
+    public ResponseEntity<StudentDTO> deleteStudentById(@PathVariable String id) {
+        service.deleteStudentById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<StudentDTO> deleteStudentById(@RequestBody Student stu) {
+        service.deleteStudent(stu);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
