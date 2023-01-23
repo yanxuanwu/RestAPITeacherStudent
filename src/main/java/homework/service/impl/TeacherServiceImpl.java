@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-
+@Service
 public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepositoryCustom teacherRepository;
 
