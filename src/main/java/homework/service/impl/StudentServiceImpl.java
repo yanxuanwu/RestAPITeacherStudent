@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class StudentServiceImpl implements StudentService {
     @Autowired
     private final StudentRepositoryCustom studentRepository;
