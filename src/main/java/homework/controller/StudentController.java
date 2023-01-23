@@ -19,7 +19,7 @@ public class StudentController {
     @Qualifier("studentServiceImpl")
     private final StudentService service;
 
-    public StudentController(StudentService service) {
+    public StudentController(@Qualifier("studentServiceImpl") StudentService service) {
         this.service = service;
     }
 
