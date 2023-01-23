@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
+    @Autowired
+    @Qualifier("teacherRepositoryImpl")
     private final TeacherRepositoryCustom teacherRepository;
 
-    @Autowired
+    
     public TeacherServiceImpl(TeacherRepositoryCustom teacherRepository) {
         this.teacherRepository = teacherRepository;
     }
