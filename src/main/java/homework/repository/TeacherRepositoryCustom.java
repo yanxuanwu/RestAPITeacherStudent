@@ -5,6 +5,7 @@ import homework.pojo.entity.Teacher;
 
 import java.util.List;
 
+@Repository
 public interface TeacherRepositoryCustom {
     Teacher findTeacherById(String id);
     List<Teacher> findAllTeacher();
