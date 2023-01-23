@@ -17,7 +17,7 @@ public class TeacherController {
     @Qualifier("teacherServiceImpl")
     private final TeacherService service;
 
-    public TeacherController(TeacherService service) {
+    public TeacherController(@Qualifier("teacherServiceImpl") TeacherService service) {
         this.service = service;
     }
 
