@@ -43,11 +43,13 @@ public class TeacherController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<TeacherDTO> deleteTeacherById(@PathVariable String id) {
+        service.deleteTeacherById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping
     public ResponseEntity<TeacherDTO> deleteTeacher(@RequestBody Teacher teacher) {
+        service.deleteTeacher(teacher);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
